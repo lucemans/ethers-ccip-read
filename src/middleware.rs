@@ -24,6 +24,8 @@ use crate::{
 
 /// addr(bytes32, uint)
 pub const ADDR_MULTI_SELECTOR: Selector = [237, 28, 238, 15];
+/// addr(bytes32, uint256)
+pub const ADDR_MULTI_SELECTOR2: Selector = [241, 203, 126, 6];
 
 #[derive(Debug, Clone)]
 pub struct CCIPReadMiddleware<M> {
@@ -47,7 +49,7 @@ where
             .query_resolver_parameters(
                 ParamType::Bytes,
                 ens_name,
-                ADDR_MULTI_SELECTOR,
+                ADDR_MULTI_SELECTOR2,
                 Some(&[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60]),
             )
             .await?;
