@@ -41,7 +41,7 @@ where
                 ParamType::Bytes,
                 ens_name,
                 ADDR_MULTI_SELECTOR,
-                Some(&[coin_type]),
+                Some(&[0, 0, 0, coin_type]),
             )
             .await?;
         Ok(field)
