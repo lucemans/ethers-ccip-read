@@ -45,7 +45,7 @@ where
         let x = U256::from_dec_str(coin_type)
             .map_err(|x| CCIPReadMiddlewareError::FetchError("Invalid Cointype".to_owned()))?;
 
-        let field: String = self
+        let field: Bytes = self
             .query_resolver_parameters(
                 ParamType::Bytes,
                 ens_name,
@@ -53,7 +53,7 @@ where
                 Some(&[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60]),
             )
             .await?;
-        Ok(field)
+        Ok(format!("{:?}", field))
     }
 }
 
