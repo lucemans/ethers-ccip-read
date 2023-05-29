@@ -46,7 +46,7 @@ where
             ));
         }
 
-        debug!("Calling resolver with tx: {:?} at res {:?}", tx, resolver_address);
+        println!("Calling resolver with tx: {:?} at res {:?}", tx, resolver_address);
 
         // resolve
         let mut data = self.call(&tx, None).await.map_err(|e| {

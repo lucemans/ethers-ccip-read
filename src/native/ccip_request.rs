@@ -100,6 +100,8 @@ where
             .json()
             .await?;
 
+            println!("CCIP Request Result: {:?}", result);
+
             // If the result contains the "data" field, decode the data and return it as Bytes
             if let Some(returned_data) = result.data {
                 match hex::decode(&returned_data[2..]) {
