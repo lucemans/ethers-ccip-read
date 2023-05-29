@@ -3,6 +3,7 @@ use ethers_core::{
     types::{transaction::eip2718::TypedTransaction, Bytes, Selector},
 };
 use ethers_providers::{resolve, Middleware};
+use tracing::debug;
 
 use crate::{
     error::CCIPMiddlewareError,
@@ -45,10 +46,13 @@ where
             ));
         }
 
+        debug!("Calling resolver with tx: {:?} at res {:?}", tx, resolver_address);
+
         // resolve
         let mut data = self.inner().call(&tx, None).await.map_err(|e| {
             CCIPMiddlewareError::TodoError(format!("QRP Error calling resolver: {}", e.to_string()))
         })?;
+
         if parse_bytes {
             data = decode_bytes(ParamType::Bytes, data);
         }
