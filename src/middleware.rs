@@ -278,7 +278,16 @@ where
         let result = match self.inner().call(transaction, block_id).await {
             Ok(response) => response.to_string(),
             Err(provider_error) => {
-                let content = provider_error.as_error_response().unwrap();
+                let content = provider_error.as_error_response().map_or_else(
+                    || {
+                        log::info!("Error parsing provider error");
+                        println!("Error parsing provider error {:?}", provider_error);
+                        Err(CCIPReadMiddlewareError::FetchError(
+                            "Unable to parse error response".to_string(),
+                        ))
+                    },
+                    Ok,
+                )?;
                 let data = content.data.as_ref().unwrap_or(&serde_json::Value::Null);
                 if data.is_null() {
                     return Err(CCIPReadMiddlewareError::GatewayError(content.to_string()));
