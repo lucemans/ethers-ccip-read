@@ -10,17 +10,6 @@ where
     pub ens: Option<Address>,
 }
 
-impl<M> Clone for CCIPReadMiddleware<M>
-where
-    M: Middleware,
-{
-    fn clone(&self) -> Self {
-        Self {
-            inner: self.inner.clone(),
-            ens: self.ens,
-        }
-}
-
 impl<M> CCIPReadMiddleware<M>
 where
     M: Middleware,
