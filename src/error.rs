@@ -4,10 +4,6 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum CCIPMiddlewareError<M: Middleware> {
-    /// Thrown when the internal middleware errors
-    #[error(transparent)]
-    MiddlewareError(M::Error),
-
     #[error(transparent)]
     RPCError(#[from] JsonRpcError),
 
@@ -21,5 +17,9 @@ pub enum CCIPMiddlewareError<M: Middleware> {
     MaxRedirectionError,
 
     #[error("Todo but Error is {0}")]
-    TodoError(String)
+    TodoError(String),
+
+    /// Thrown when the internal middleware errors
+    #[error(transparent)]
+    MiddlewareError(M::Error),
 }

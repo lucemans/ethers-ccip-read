@@ -44,12 +44,15 @@ where
 
         // let tx_value: Value = utils::serialize(transaction);
         let block_value = serialize(&block_id.unwrap_or_else(|| BlockNumber::Latest.into()));
-        let result = match self.call(transaction, block_id).await {
+        let result = match self.inner().call(transaction, block_id).await {
             Ok(response) => response.to_string(),
             Err(provider_error) => {
+                if !provider_error.is_error_response() {
+                    return Err(CCIPMiddlewareError::MiddlewareError(provider_error));
+                }
+
                 let content = provider_error
-                    .as_error_response()
-                    .map_or_else(|| Err(CCIPMiddlewareError::TodoError("Cannot asErrorResponse".to_string())), Ok)?;
+                    .as_error_response().unwrap();
                 let data = content.data.as_ref().unwrap_or(&serde_json::Value::Null);
                 if data.is_null() {
                     return Err(CCIPMiddlewareError::TodoError("Data is null".to_string()));
@@ -130,6 +133,7 @@ where
                 return self._call(&new_transaction, block_id, attempt + 1).await;
             }
         }
+
         let result = match Bytes::from_str(&result) {
             Ok(bytes) => bytes,
             Err(error) => {
