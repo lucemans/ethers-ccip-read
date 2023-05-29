@@ -1,6 +1,7 @@
 use ethers_core::types::Address;
 use ethers_providers::Middleware;
 
+#[derive(Debug, Clone)]
 pub struct CCIPReadMiddleware<M>
 where
     M: Middleware,
