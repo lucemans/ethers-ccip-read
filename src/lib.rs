@@ -4,7 +4,8 @@
 mod middleware;
 pub use middleware::CCIPReadMiddleware;
 
-mod errors;
-pub use errors::CCIPReadMiddlewareError;
-
 pub mod utils;
+
+pub mod native;
+
+pub mod error;
