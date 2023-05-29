@@ -47,7 +47,7 @@ where
 
         // resolve
         let mut data = self.inner().call(&tx, None).await.map_err(|e| {
-            CCIPMiddlewareError::TodoError(format!("Error calling resolver: {}", e.to_string()))
+            CCIPMiddlewareError::TodoError(format!("QRP Error calling resolver: {}", e.to_string()))
         })?;
         if parse_bytes {
             data = decode_bytes(ParamType::Bytes, data);

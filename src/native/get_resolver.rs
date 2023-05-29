@@ -27,7 +27,7 @@ where
                     None,
                 )
                 .await.map_err(|x| {
-                    CCIPMiddlewareError::TodoError(format!("Error calling resolver: {}", x.to_string()))
+                    CCIPMiddlewareError::TodoError(format!("GR Error calling resolver: {}", x.to_string()))
                 })?;
 
             if data.0.is_empty() {
