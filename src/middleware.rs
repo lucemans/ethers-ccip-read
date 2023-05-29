@@ -289,7 +289,7 @@ where
                 )?;
                 let data = content.data.as_ref().unwrap_or(&serde_json::Value::Null);
                 if data.is_null() {
-                    return Err(CCIPReadMiddlewareError::GatewayError(content.to_string()));
+                    return Err(CCIPReadMiddlewareError::RPCError(content.clone()));
                 }
                 data.to_string()
                     .trim_matches('"')

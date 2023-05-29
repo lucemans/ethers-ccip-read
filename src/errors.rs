@@ -1,4 +1,4 @@
-use ethers_providers::{Middleware, MiddlewareError};
+use ethers_providers::{Middleware, MiddlewareError, JsonRpcError};
 use thiserror::Error;
 
 /// Handle CCIP-Read middlware specific errors.
@@ -7,6 +7,9 @@ pub enum CCIPReadMiddlewareError<M: Middleware> {
     /// Thrown when the internal middleware errors
     #[error("{0}")]
     MiddlewareError(M::Error),
+
+    #[error("{0}")]
+    RPCError(JsonRpcError),
 
     #[error("Error(s) during CCIP fetch: {0}")]
     FetchError(String),
