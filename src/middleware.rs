@@ -35,7 +35,7 @@ impl<M> CCIPReadMiddleware<M>
 where
     M: Middleware,
 {
-    async fn resolve_addresses(&self, ens_name: &str, coin_type: u8) -> Result<String, CCIPReadMiddlewareError<M>> {
+    pub async fn resolve_addresses(&self, ens_name: &str, coin_type: u8) -> Result<String, CCIPReadMiddlewareError<M>> {
         let field: String = self
             .query_resolver_parameters(
                 ParamType::String,
