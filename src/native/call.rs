@@ -17,6 +17,14 @@ impl<M> CCIPReadMiddleware<M>
 where
     M: Middleware,
 {
+    pub async fn call(
+        &self,
+        tx: &TypedTransaction,
+        block: Option<BlockId>,
+    ) -> Result<Bytes, CCIPMiddlewareError<M>> {
+        self._call(tx, block, 0).await
+    }
+
     #[async_recursion]
     pub async fn _call(
         &self,
@@ -36,7 +44,7 @@ where
 
         // let tx_value: Value = utils::serialize(transaction);
         let block_value = serialize(&block_id.unwrap_or_else(|| BlockNumber::Latest.into()));
-        let result = match self.inner().call(transaction, block_id).await {
+        let result = match self.call(transaction, block_id).await {
             Ok(response) => response.to_string(),
             Err(provider_error) => {
                 let content = provider_error

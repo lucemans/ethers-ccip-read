@@ -38,7 +38,7 @@ where
                             to: Some(NameOrAddress::Address(token.contract)),
                             ..Default::default()
                         };
-                        let data = self.inner().call(&tx.into(), None).await.map_err(|x| {
+                        let data = self.call(&tx.into(), None).await.map_err(|x| {
                             CCIPMiddlewareError::TodoError(format!(
                                 "Error calling nft info: {}",
                                 x.to_string()
@@ -66,7 +66,7 @@ where
                             to: Some(NameOrAddress::Address(token.contract)),
                             ..Default::default()
                         };
-                        let data = self.inner().call(&tx.into(), None).await.map_err(|x| {
+                        let data = self.call(&tx.into(), None).await.map_err(|x| {
                             CCIPMiddlewareError::TodoError(format!(
                                 "Error calling nft info: {}",
                                 x.to_string()

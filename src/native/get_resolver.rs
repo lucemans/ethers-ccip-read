@@ -22,7 +22,7 @@ where
             }
 
             let data = self
-                .inner().call(
+                .call(
                     &get_resolver(ens_addr, &current_name.to_string()).into(),
                     None,
                 )

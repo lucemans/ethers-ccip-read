@@ -49,7 +49,7 @@ where
         debug!("Calling resolver with tx: {:?} at res {:?}", tx, resolver_address);
 
         // resolve
-        let mut data = self.inner().call(&tx, None).await.map_err(|e| {
+        let mut data = self.call(&tx, None).await.map_err(|e| {
             CCIPMiddlewareError::TodoError(format!("QRP Error calling resolver: {}", e.to_string()))
         })?;
 
