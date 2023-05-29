@@ -9,7 +9,7 @@ use ethers_core::{
         transaction::eip2718::TypedTransaction, Address, BlockId, BlockNumber, Bytes,
         NameOrAddress, Selector, TransactionRequest, Uint8, H160, U256,
     },
-    utils::{self, hex},
+    utils::{self, hex, rlp::Encodable},
 };
 use ethers_providers::{ens, erc, Middleware, MiddlewareError};
 use futures_util::try_join;
@@ -35,13 +35,20 @@ impl<M> CCIPReadMiddleware<M>
 where
     M: Middleware,
 {
-    pub async fn resolve_addresses(&self, ens_name: &str, coin_type: u8) -> Result<String, CCIPReadMiddlewareError<M>> {
+    pub async fn resolve_addresses(
+        &self,
+        ens_name: &str,
+        coin_type: &str,
+    ) -> Result<String, CCIPReadMiddlewareError<M>> {
+        let x = U256::from_dec_str(coin_type)
+            .map_err(|x| CCIPReadMiddlewareError::FetchError("Invalid Cointype".to_owned()))?;
+
         let field: String = self
             .query_resolver_parameters(
                 ParamType::Bytes,
                 ens_name,
                 ADDR_MULTI_SELECTOR,
-                Some(&[0, 0, 0, coin_type]),
+                Some(&x.rlp_bytes()),
             )
             .await?;
         Ok(field)
