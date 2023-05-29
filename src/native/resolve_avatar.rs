@@ -15,7 +15,7 @@ where
     M: Middleware,
 {
     /// Resolve avatar field of an ENS name
-    async fn resolve_avatar(&self, ens_name: &str) -> Result<Url, CCIPMiddlewareError<M>> {
+    pub async fn resolve_avatar(&self, ens_name: &str) -> Result<Url, CCIPMiddlewareError<M>> {
         let (field, owner) = try_join!(
             self.resolve_field(ens_name, "avatar"),
             self.resolve_name(ens_name)
