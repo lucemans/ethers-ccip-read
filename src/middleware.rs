@@ -7,7 +7,7 @@ use ethers_core::{
     abi::{self, Detokenize, ParamType, Token},
     types::{
         transaction::eip2718::TypedTransaction, Address, BlockId, BlockNumber, Bytes,
-        NameOrAddress, Selector, TransactionRequest, H160, U256,
+        NameOrAddress, Selector, TransactionRequest, Uint8, H160, U256,
     },
     utils::{self, hex},
 };
@@ -22,10 +22,30 @@ use crate::{
     CCIPReadMiddlewareError,
 };
 
+/// addr(bytes32, uint)
+pub const ADDR_MULTI_SELECTOR: Selector = [237, 28, 238, 15];
+
 #[derive(Debug, Clone)]
 pub struct CCIPReadMiddleware<M> {
     inner: M,
     ens: Option<Address>,
+}
+
+impl<M> CCIPReadMiddleware<M>
+where
+    M: Middleware,
+{
+    async fn resolve_addresses(&self, ens_name: &str, coin_type: u8) -> Result<String, CCIPReadMiddlewareError<M>> {
+        let field: String = self
+            .query_resolver_parameters(
+                ParamType::String,
+                ens_name,
+                ADDR_MULTI_SELECTOR,
+                Some(&[coin_type]),
+            )
+            .await?;
+        Ok(field)
+    }
 }
 
 static MAX_CCIP_REDIRECT_ATTEMPT: u8 = 10;
