@@ -280,7 +280,6 @@ where
             Err(provider_error) => {
                 let content = provider_error.as_error_response().map_or_else(
                     || {
-                        log::info!("Error parsing provider error");
                         println!("Error parsing provider error {:?}", provider_error);
                         Err(CCIPReadMiddlewareError::FetchError(
                             "Unable to parse error response".to_string(),
